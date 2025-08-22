@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VortiTour - Next-Generation Virtual Tour Platform</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts - Poppins for headings, Open Sans for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-dark: #003366;
+            --primary-light: #004080;
+            --secondary: #00BFFF;
+            --accent: #FFFFFF;
+            --text-light: #f0f4f8;
+            --text-muted: #a0aec0;
+            --background: #001a33;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--background);
+            color: var(--text-light);
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+        
+        /* RTL Support */
+        [dir="rtl"] {
+            text-align: right;
+        }
+        
+        [dir="rtl"] .text-start {
+            text-align: right !important;
+        }
+        
+        [dir="rtl"] .text-end {
+            text-align: left !important;
+        }
+        
+        /* Navbar Styles */
+        .navbar {
+            background-color: rgba(0, 51, 102, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--accent) !important;
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-brand i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        [dir="rtl"] .navbar-brand i {
+            margin-right: 0;
+            margin-left: 10px;
+        }
+        
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 600;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--secondary) !important;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Language Switcher */
+        .lang-switch {
+            background-color: rgba(0, 191, 255, 0.2);
+            border: 1px solid var(--secondary);
+            color: var(--accent);
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .lang-switch:hover {
+            background-color: var(--secondary);
+            color: var(--primary-dark);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: radial-gradient(circle at 10% 20%, rgba(0, 191, 255, 0.1) 0%, rgba(0, 26, 51, 0) 90%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="rgba(0, 191, 255, 0.1)" stroke-width="0.5"/></svg>');
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            animation: fadeInUp 0.8s ease 0.2s;
+            animation-fill-mode: both;
+        }
+        
+        .cta-button {
+            background: var(--secondary);
+            color: var(--primary-dark);
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            animation: fadeInUp 0.8s ease 0.4s;
+            animation-fill-mode: both;
+            box-shadow: 0 10px 20px rgba(0, 191, 255, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 191, 255, 0.4);
+            color: var(--primary-dark);
+        }
+        
+        /* About Section */
+        .about {
+            padding: 100px 0;
+            background-color: rgba(0, 51, 102, 0.3);
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            color: var(--accent);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 70px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        [dir="rtl"] .section-title::after {
+            left: auto;
+            right: 0;
+        }
+        
+        .about-image {
+            height: 400px;
+            background-color: rgba(0, 191, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+            opacity: 0.1;
+            z-index: 1;
+        }
+        
+        .about-image i {
+            font-size: 5rem;
+            color: var(--secondary);
+            z-index: 2;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+        }
+        
+        .feature-card {
+            background-color: rgba(0, 51, 102, 0.3);
+            border-radius: 10px;
+            padding: 30px;
+            height: 100%;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+            opacity: 0;
+            z-index: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--secondary);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-card:hover::before {
+            opacity: 0.05;
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .feature-icon i {
+            font-size: 1.8rem;
+            color: var(--primary-dark);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            color: var(--accent);
+        }
+        
+        .feature-card p {
+            color: var(--text-muted);
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* How It Works Section */
+        .how-it-works {
+            padding: 100px 0;
+            background-color: rgba(0, 51, 102, 0.3);
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        [dir="rtl"] .step {
+            flex-direction: row-reverse;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-right: 20px;
+            flex-shrink: 0;
+            color: var(--primary-dark);
+        }
+        
+        [dir="rtl"] .step-number {
+            margin-right: 0;
+            margin-left: 20px;
+        }
+        
+        .step-content {
+            flex-grow: 1;
+        }
+        
+        .step-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .step-content p {
+            color: var(--text-muted);
+        }
+        
+        /* Demo Preview Section */
+        .demo-preview {
+            padding: 100px 0;
+        }
+        
+        .demo-container {
+            background-color: rgba(0, 51, 102, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .demo-placeholder {
+            height: 500px;
+            background-color: rgba(0, 191, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .demo-placeholder i {
+            font-size: 5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 0;
+            background-color: rgba(0, 51, 102, 0.3);
+        }
+        
+        .pricing-card {
+            background-color: var(--primary-dark);
+            border-radius: 10px;
+            padding: 40px;
+            height: 100%;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-card.featured {
+            border-color: var(--secondary);
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 191, 255, 0.2);
+        }
+        
+        .pricing-card.featured::before {
+            content: 'POPULAR';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--secondary);
+            color: var(--primary-dark);
+            padding: 5px 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transform: rotate(45deg);
+        }
+        
+        [dir="rtl"] .pricing-card.featured::before {
+            right: auto;
+            left: -30px;
+            transform: rotate(-45deg);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+        
+        .plan-features li {
+            padding: 10px 0;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+        }
+        
+        .plan-features li i {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+        
+        [dir="rtl"] .plan-features li i {
+            margin-right: 0;
+            margin-left: 10px;
+        }
+        
+        .plan-button {
+            background: var(--secondary);
+            color: var(--primary-dark);
+            border: none;
+            padding: 12px 25px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .plan-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 191, 255, 0.3);
+            color: var(--primary-dark);
+        }
+        
+        /* Target Market Section */
+        .target-market {
+            padding: 100px 0;
+            background-color: rgba(0, 51, 102, 0.3);
+        }
+        
+        .market-card {
+            background-color: var(--primary-dark);
+            border-radius: 10px;
+            padding: 30px;
+            height: 100%;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            text-align: center;
+        }
+        
+        .market-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--secondary);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .market-icon {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        .market-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+        }
+        
+        .contact-form {
+            background-color: rgba(0, 51, 102, 0.3);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .form-control, .form-select {
+            background-color: var(--primary-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border-radius: 5px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background-color: var(--primary-dark);
+            border-color: var(--secondary);
+            color: var(--text-light);
+            box-shadow: 0 0 0 0.25rem rgba(0, 191, 255, 0.25);
+        }
+        
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .submit-button {
+            background: var(--secondary);
+            color: var(--primary-dark);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 191, 255, 0.3);
+            color: var(--primary-dark);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--secondary);
+            color: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-dark);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        footer p {
+            color: var(--text-muted);
+            margin: 0;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .about-image {
+                height: 300px;
+                margin-bottom: 30px;
+            }
+            
+            .demo-placeholder {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-box-seam"></i>
+                VortiTour
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#how-it-works">How It Works</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#demo">Demo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pricing">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+                <button class="lang-switch" id="langSwitch">AR</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1 data-en="Transform Your 3D Renders Into Immersive Virtual Tours" data-ar="حول عروضك ثلاثية الأبعاد إلى جولات افتراضية غامرة">Transform Your 3D Renders Into Immersive Virtual Tours</h1>
+                        <p data-en="VortiTour empowers architectural studios, real estate developers, and creative agencies to publish high-quality, Matterport-style 360° virtual tours directly from Unreal Engine 5 renders." data-ar="تمكن VortiTour الاستوديوهات المعمارية ومطوري العقارات والوكالات الإبداعية من نشر جولات افتراضية بزاوية 360 درجة عالية الجودة على طراز Matterport مباشرة من عروض Unreal Engine 5.">VortiTour empowers architectural studios, real estate developers, and creative agencies to publish high-quality, Matterport-style 360° virtual tours directly from Unreal Engine 5 renders.</p>
+                        <a href="#demo" class="cta-button" data-en="Watch Demo" data-ar="شاهد العرض التوضيحي">Watch Demo</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image">
+                        <img src="https://via.placeholder.com/600x400" alt="VortiTour Virtual Tour Platform" class="img-fluid rounded">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="about-image">
+                        <i class="bi bi-building"></i>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h2 class="section-title" data-en="About VortiTour" data-ar="حول VortiTour">About VortiTour</h2>
+                    <p data-en="VortiTour is a next-generation SaaS platform that transforms digital visualization into immersive storytelling. As part of the Vortigate Digital Solutions ecosystem, we specialize in Virtual Reality (VR), Augmented Reality (AR), and WebXR solutions." data-ar="VortiTour هي منصة SaaS من الجيل التالي تحول التصور الرقمي إلى سرد غامر. كجزء من نظام Vortigate Digital Solutions البيئي، نتخصص في حلول الواقع الافتراضي (VR) والواقع المعزز (AR) و WebXR.">VortiTour is a next-generation SaaS platform that transforms digital visualization into immersive storytelling. As part of the Vortigate Digital Solutions ecosystem, we specialize in Virtual Reality (VR), Augmented Reality (AR), and WebXR solutions.</p>
+                    <p data-en="Our mission is to empower studios and businesses with intuitive tools that transform 3D renders into immersive tours, helping them communicate ideas, inspire stakeholders, and close deals faster." data-ar="مهمتنا هي تمكين الاستوديوهات والشركات بأدوات بديهية تحول العروض ثلاثية الأبعاد إلى جولات غامرة، مما يساعدهم على توصيل الأفكار وإلهام أصحاب المصلحة وإغلاق الصفقات بشكل أسرع.">Our mission is to empower studios and businesses with intuitive tools that transform 3D renders into immersive tours, helping them communicate ideas, inspire stakeholders, and close deals faster.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title" data-en="Powerful Features" data-ar="ميزات قوية">Powerful Features</h2>
+                <p class="text-muted" data-en="Discover what makes VortiTour the leading virtual tour platform for professionals." data-ar="اكتشف ما يجعل VortiTour منصة الجولة الافتراضية الرائدة للمحترفين.">Discover what makes VortiTour the leading virtual tour platform for professionals.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-upload"></i>
+                        </div>
+                        <h3 data-en="Easy Upload" data-ar="تحميل سهل">Easy Upload</h3>
+                        <p data-en="Upload 360° renders or panoramas directly from Unreal Engine 5 with our streamlined import process." data-ar="قم بتحميل العروض أو البانورامات بزاوية 360 درجة مباشرة من Unreal Engine 5 مع عملية الاستيراد المبسطة لدينا.">Upload 360° renders or panoramas directly from Unreal Engine 5 with our streamlined import process.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-cursor"></i>
+                        </div>
+                        <h3 data-en="Interactive Hotspots" data-ar="نقاط تفاعلية">Interactive Hotspots</h3>
+                        <p data-en="Add informative hotspots, multimedia content, and interactive elements to enhance user engagement." data-ar="أضف نقاطًا تفاعلية معلوماتية ومحتوى متعدد الوسائط وعناصر تفاعلية لتعزيز مشاركة المستخدم.">Add informative hotspots, multimedia content, and interactive elements to enhance user engagement.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-palette"></i>
+                        </div>
+                        <h3 data-en="Full Customization" data-ar="تخصيص كامل">Full Customization</h3>
+                        <p data-en="Customize floorplans, branding, navigation, and user interface to match your unique style." data-ar="خصص المخططات الأرضية والعلامة التجارية والتنقل وواجهة المستخدم لتتناسب مع أسلوبك الفريد.">Customize floorplans, branding, navigation, and user interface to match your unique style.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-translate"></i>
+                        </div>
+                        <h3 data-en="Multi-language Support" data-ar="دعم متعدد اللغات">Multi-language Support</h3>
+                        <p data-en="Host tours with multiple language options to reach a global audience and expand your market reach." data-ar="استضف جولات بخيارات لغات متعددة للوصول إلى جمهور عالمي وتوسيع نطاق وصولك إلى السوق.">Host tours with multiple language options to reach a global audience and expand your market reach.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-laptop"></i>
+                        </div>
+                        <h3 data-en="Multi-Device Compatibility" data-ar="توافق مع多个 الأجهزة">Multi-Device Compatibility</h3>
+                        <p data-en="Access tours on desktop, mobile, tablets, and VR headsets for a seamless experience across all platforms." data-ar="الوصول إلى الجولات على أجهزة الكمبيوتر والهواتف المحمولة والأجهزة اللوحية وسماعات الواقع الافتراضي لتجربة سلسة عبر جميع المنصات.">Access tours on desktop, mobile, tablets, and VR headsets for a seamless experience across all platforms.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h3 data-en="Secure Backend" data-ar="خلفية آمنة">Secure Backend</h3>
+                        <p data-en="Integration with Supabase backend ensures secure data management, authentication, and storage for your tours." data-ar="التكامل مع خلفية Supabase يضمن إدارة بيانات آمنة والمصادقة والتخزين لجولاتك.">Integration with Supabase backend ensures secure data management, authentication, and storage for your tours.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Market Section -->
+    <section id="target-market" class="target-market">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title" data-en="Who We Serve" data-ar="من نخدم">Who We Serve</h2>
+                <p class="text-muted" data-en="VortiTour is designed for professionals who need to showcase spaces in an immersive way." data-ar="تم تصميم VortiTour للمحترفين الذين يحتاجون إلى عرض المساحات بطريقة غامرة.">VortiTour is designed for professionals who need to showcase spaces in an immersive way.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="market-card">
+                        <div class="market-icon">
+                            <i class="bi bi-buildings"></i>
+                        </div>
+                        <h3 data-en="Architectural Studios" data-ar="الاستوديوهات المعمارية">Architectural Studios</h3>
+                        <p data-en="Present architectural projects in a realistic and engaging way to clients and stakeholders." data-ar="قدم المشاريع المعمارية بطريقة واقعية وجذابة للعملاء وأصحاب المصلحة.">Present architectural projects in a realistic and engaging way to clients and stakeholders.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="market-card">
+                        <div class="market-icon">
+                            <i class="bi bi-house"></i>
+                        </div>
+                        <h3 data-en="Real Estate Developers" data-ar="مطورو العقارات">Real Estate Developers</h3>
+                        <p data-en="Create virtual showrooms and property tours that help buyers visualize spaces before construction." data-ar="أنشئ صالات عرض افتراضية وجولات عقارية تساعد المشترين على تصور المساحات قبل البناء.">Create virtual showrooms and property tours that help buyers visualize spaces before construction.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="market-card">
+                        <div class="market-icon">
+                            <i class="bi bi-brush"></i>
+                        </div>
+                        <h3 data-en="Interior Designers" data-ar="مصممو الديكور الداخلي">Interior Designers</h3>
+                        <p data-en="Showcase interior design concepts with immersive tours that highlight materials, lighting, and spatial arrangements." data-ar="اعرض مفاهيم التصميم الداخلي مع جولات غامرة تسلط الضوء على المواد والإضاءة والترتيبات المكانية.">Showcase interior design concepts with immersive tours that highlight materials, lighting, and spatial arrangements.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="market-card">
+                        <div class="market-icon">
+                            <i class="bi bi-museum"></i>
+                        </div>
+                        <h3 data-en="Museums & Cultural Institutions" data-ar="المتاحف والمؤسسات الثقافية">Museums & Cultural Institutions</h3>
+                        <p data-en="Create interactive exhibitions and virtual tours that make art and culture accessible to a global audience." data-ar="أنشئ معارض تفاعلية وجولات افتراضية تجعل الفن والثقافة في متناول جمهور عالمي.">Create interactive exhibitions and virtual tours that make art and culture accessible to a global audience.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="market-card">
+                        <div class="market-icon">
+                            <i class="bi bi-building"></i>
+                        </div>
+                        <h3 data-en="Engineering & Construction" data-ar="الهندسة والإنشاءات">Engineering & Construction</h3>
+                        <p data-en="Visualize complex construction projects and engineering solutions with detailed 3D virtual tours." data-ar="تصور مشاريع البناء المعقدة والحلول الهندسية مع جولات افتراضية ثلاثية الأبعاد مفصلة.">Visualize complex construction projects and engineering solutions with detailed 3D virtual tours.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="market-card">
+                        <div class="market-icon">
+                            <i class="bi bi-airplane"></i>
+                        </div>
+                        <h3 data-en="Hospitality & Tourism" data-ar="الضيافة والسياحة">Hospitality & Tourism</h3>
+                        <p data-en="Offer virtual tours of hotels, resorts, and tourist destinations to attract visitors from around the world." data-ar="قدم جولات افتراضية للفنادق والمنتجعات والوجهات السياحية لجذب الزوار من حول العالم.">Offer virtual tours of hotels, resorts, and tourist destinations to attract visitors from around the world.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title" data-en="How It Works" data-ar="كيف يعمل">How It Works</h2>
+                <p class="text-muted" data-en="Transform your 3D renders into immersive virtual tours in just a few simple steps." data-ar="حول عروضك ثلاثية الأبعاد إلى جولات افتراضية غامرة في بضع خطوات بسيطة.">Transform your 3D renders into immersive virtual tours in just a few simple steps.</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3 data-en="Create Your Account" data-ar="أنشئ حسابك">Create Your Account</h3>
+                            <p data-en="Sign up for a VortiTour account and choose the subscription plan that best fits your needs." data-ar="سجل للحصول على حساب VortiTour واختر خطة الاشتراك التي تناسب احتياجاتك بشكل أفضل.">Sign up for a VortiTour account and choose the subscription plan that best fits your needs.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3 data-en="Upload Your Renders" data-ar="ارفع عروضك">Upload Your Renders</h3>
+                            <p data-en="Upload your 360° renders or panoramas from Unreal Engine 5 using our intuitive upload interface." data-ar="ارفع عروضك أو بانوراماتك بزاوية 360 درجة من Unreal Engine 5 باستخدام واجهة الرفع البديهية لدينا.">Upload your 360° renders or panoramas from Unreal Engine 5 using our intuitive upload interface.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3 data-en="Customize Your Tour" data-ar="خصص جولتك">Customize Your Tour</h3>
+                            <p data-en="Add hotspots, floorplans, branding elements, and interactive features to enhance the user experience." data-ar="أضف نقاطًا تفاعلية ومخططات أرضية وعناصر العلامة التجارية وميزات تفاعلية لتعزيز تجربة المستخدم.">Add hotspots, floorplans, branding elements, and interactive features to enhance the user experience.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3 data-en="Configure Settings" data-ar="قم بتكوين الإعدادات">Configure Settings</h3>
+                            <p data-en="Set up navigation options, viewing modes, language preferences, and access controls for your tour." data-ar="قم بإعداد خيارات التنقل وأوضاع المشاهدة وتفضيلات اللغة وضوابط الوصول لجولتك.">Set up navigation options, viewing modes, language preferences, and access controls for your tour.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3 data-en="Publish & Share" data-ar="انشر وشارك">Publish & Share</h3>
+                            <p data-en="Publish your tour and share it with clients, stakeholders, or the public through a unique link or embed code." data-ar="انشر جولتك وشاركها مع العملاء وأصحاب المصلحة أو الجمهور من خلال رابط فريد أو رمز تضمين.">Publish your tour and share it with clients, stakeholders, or the public through a unique link or embed code.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h3 data-en="Analyze & Optimize" data-ar="حلل وحقق التحسين">Analyze & Optimize</h3>
+                            <p data-en="Track engagement metrics, gather feedback, and continuously improve your virtual tours based on insights." data-ar="تتبع مقاييس المشاركة، وجمع الملاحظات، وتحسين جولاتك الافتراضية باستمرار بناءً على الرؤى.">Track engagement metrics, gather feedback, and continuously improve your virtual tours based on insights.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Preview Section -->
+    <section id="demo" class="demo-preview">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title" data-en="Platform Demo" data-ar="عرض توضيحي للمنصة">Platform Demo</h2>
+                <p class="text-muted" data-en="See VortiTour in action and discover how it can transform your 3D visualization workflow." data-ar="شاهد VortiTour أثناء العمل واكتشف كيف يمكنه تحويل سير عمل التصور ثلاثي الأبعاد الخاص بك.">See VortiTour in action and discover how it can transform your 3D visualization workflow.</p>
+            </div>
+            <div class="demo-container">
+                <div class="demo-placeholder">
+                    <i class="bi bi-play-circle"></i>
+                    <h3 data-en="VortiTour Platform Demo" data-ar="عرض توضيحي لمنصة VortiTour">VortiTour Platform Demo</h3>
+                    <p data-en="Click to play the demo video and see how VortiTour transforms Unreal Engine 5 renders into immersive virtual tours." data-ar="انقر لتشغيل الفيديو التجريبي ورؤية كيف يحول VortiTour عروض Unreal Engine 5 إلى جولات افتراضية غامرة.">Click to play the demo video and see how VortiTour transforms Unreal Engine 5 renders into immersive virtual tours.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title" data-en="Pricing Plans" data-ar="خطط الأسعار">Pricing Plans</h2>
+                <p class="text-muted" data-en="Choose the perfect plan for your virtual tour needs. All plans include our core features." data-ar="اختر الخطة المثالية لاحتياجات جولتك الافتراضية. تشمل جميع الخطط ميزاتنا الأساسية.">Choose the perfect plan for your virtual tour needs. All plans include our core features.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="pricing-card">
+                        <h3 class="plan-name" data-en="Starter" data-ar="المبتدئ">Starter</h3>
+                        <div class="plan-price">$49<span data-en="/month" data-ar="/شهر">/month</span></div>
+                        <ul class="plan-features">
+                            <li><i class="bi bi-check-circle"></i> <span data-en="5 virtual tours" data-ar="5 جولات افتراضية">5 virtual tours</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="10GB storage" data-ar="10GB تخزين">10GB storage</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="Basic customization" data-ar="تخصيص أساسي">Basic customization</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="Email support" data-ar="دعم عبر البريد الإلكتروني">Email support</span></li>
+                            <li><i class="bi bi-x-circle"></i> <span data-en="Advanced analytics" data-ar="تحليلات متقدمة">Advanced analytics</span></li>
+                        </ul>
+                        <button class="plan-button" data-en="Choose Starter" data-ar="اختر المبتدئ">Choose Starter</button>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="pricing-card featured">
+                        <h3 class="plan-name" data-en="Professional" data-ar="المحترف">Professional</h3>
+                        <div class="plan-price">$99<span data-en="/month" data-ar="/شهر">/month</span></div>
+                        <ul class="plan-features">
+                            <li><i class="bi bi-check-circle"></i> <span data-en="25 virtual tours" data-ar="25 جولة افتراضية">25 virtual tours</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="50GB storage" data-ar="50GB تخزين">50GB storage</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="Advanced customization" data-ar="تخصيص متقدم">Advanced customization</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="Priority support" data-ar="دعم الأولوية">Priority support</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="Advanced analytics" data-ar="تحليلات متقدمة">Advanced analytics</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="Multi-language support" data-ar="دعم متعدد اللغات">Multi-language support</span></li>
+                        </ul>
+                        <button class="plan-button" data-en="Choose Professional" data-ar="اختر المحترف">Choose Professional</button>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="pricing-card">
+                        <h3 class="plan-name" data-en="Enterprise" data-ar="المؤسسي">Enterprise</h3>
+                        <div class="plan-price">$199<span data-en="/month" data-ar="/شهر">/month</span></div>
+                        <ul class="plan-features">
+                            <li><i class="bi bi-check-circle"></i> <span data-en="Unlimited virtual tours" data-ar="جولات افتراضية غير محدودة">Unlimited virtual tours</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="Unlimited storage" data-ar="تخزين غير محدود">Unlimited storage</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="Full customization" data-ar="تخصيص كامل">Full customization</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="24/7 dedicated support" data-ar="دعم مخصص على مدار الساعة">24/7 dedicated support</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="Advanced analytics" data-ar="تحليلات متقدمة">Advanced analytics</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="White-label option" data-ar="خيار العلامة البيضاء">White-label option</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span data-en="API access" data-ar="الوصول إلى API">API access</span></li>
+                        </ul>
+                        <button class="plan-button" data-en="Choose Enterprise" data-ar="اختر المؤسسي">Choose Enterprise</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title" data-en="Get In Touch" data-ar="تواصل معنا">Get In Touch</h2>
+                <p class="text-muted" data-en="Have questions about VortiTour? We'd love to hear from you." data-ar="لديك أسئلة حول VortiTour؟ نود أن نسمع منك.">Have questions about VortiTour? We'd love to hear from you.</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="contact-form">
+                        <form id="contactForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="name" placeholder="Your Name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="email" class="form-control" id="email" placeholder="Your Email" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select class="form-select" id="subject">
+                                        <option value="" selected disabled>Select Subject</option>
+                                        <option value="general">General Inquiry</option>
+                                        <option value="demo">Request a Demo</option>
+                                        <option value="support">Technical Support</option>
+                                        <option value="partnership">Partnership Opportunity</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="company" placeholder="Company Name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" id="message" rows="5" placeholder="Your Message" required></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="submit-button" data-en="Send Message" data-ar="إرسال الرسالة">Send Message</button>
+                            </div>
+                        </form>
+                        <div class="social-links">
+                            <a href="#"><i class="bi bi-facebook"></i></a>
+                            <a href="#"><i class="bi bi-twitter"></i></a>
+                            <a href="#"><i class="bi bi-linkedin"></i></a>
+                            <a href="#"><i class="bi bi-instagram"></i></a>
+                            <a href="#"><i class="bi bi-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p data-en="&copy; 2023 VortiTour by Vortigate Digital Solutions. All rights reserved." data-ar="&copy; 2023 VortiTour بواسطة Vortigate Digital Solutions. جميع الحقوق محفوظة.">&copy; 2023 VortiTour by Vortigate Digital Solutions. All rights reserved.</p>
+            <p class="mt-2" data-en="📍 Amman, Jordan | 📧 info@vortigate.com | 🌐 www.vortitour.com" data-ar="📍 عمان، الأردن | 📧 info@vortigate.com | 🌐 www.vortitour.com">📍 Amman, Jordan | 📧 info@vortigate.com | 🌐 www.vortitour.com</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Language Switcher
+        const langSwitch = document.getElementById('langSwitch');
+        const html = document.documentElement;
+        let currentLang = 'en';
+        
+        langSwitch.addEventListener('click', function() {
+            if (currentLang === 'en') {
+                currentLang = 'ar';
+                html.setAttribute('lang', 'ar');
+                html.setAttribute('dir', 'rtl');
+                langSwitch.textContent = 'EN';
+            } else {
+                currentLang = 'en';
+                html.setAttribute('lang', 'en');
+                html.setAttribute('dir', 'ltr');
+                langSwitch.textContent = 'AR';
+            }
+            
+            // Update all elements with data-en and data-ar attributes
+            document.querySelectorAll('[data-en]').forEach(element => {
+                if (currentLang === 'ar') {
+                    element.textContent = element.getAttribute('data-ar');
+                } else {
+                    element.textContent = element.getAttribute('data-en');
+                }
+            });
+            
+            // Update placeholders
+            document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(element => {
+                if (currentLang === 'ar') {
+                    if (element.id === 'name') element.placeholder = 'اسمك';
+                    else if (element.id === 'email') element.placeholder = 'بريدك الإلكتروني';
+                    else if (element.id === 'company') element.placeholder = 'اسم الشركة';
+                    else if (element.id === 'message') element.placeholder = 'رسالتك';
+                } else {
+                    if (element.id === 'name') element.placeholder = 'Your Name';
+                    else if (element.id === 'email') element.placeholder = 'Your Email';
+                    else if (element.id === 'company') element.placeholder = 'Company Name';
+                    else if (element.id === 'message') element.placeholder = 'Your Message';
+                }
+            });
+            
+            // Update select options
+            const subjectSelect = document.getElementById('subject');
+            if (currentLang === 'ar') {
+                subjectSelect.options[0].textContent = 'اختر الموضوع';
+                subjectSelect.options[1].textContent = 'استفسار عام';
+                subjectSelect.options[2].textContent = 'طلب عرض توضيحي';
+                subjectSelect.options[3].textContent = 'الدعم الفني';
+                subjectSelect.options[4].textContent = 'فرصة شراكة';
+            } else {
+                subjectSelect.options[0].textContent = 'Select Subject';
+                subjectSelect.options[1].textContent = 'General Inquiry';
+                subjectSelect.options[2].textContent = 'Request a Demo';
+                subjectSelect.options[3].textContent = 'Technical Support';
+                subjectSelect.options[4].textContent = 'Partnership Opportunity';
+            }
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                    const targetPosition = targetElement.offsetTop - navbarHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const company = document.getElementById('company').value;
+            const message = document.getElementById('message').value;
+            
+            // Here you would normally send the form data to a server
+            // For demo purposes, we'll just show an alert
+            const successMessage = currentLang === 'ar' 
+                ? 'شكراً لتواصلك معنا! سنرد عليك قريباً.' 
+                : 'Thank you for contacting us! We will get back to you soon.';
+                
+            // Create a custom notification instead of alert
+            const notification = document.createElement('div');
+            notification.className = 'position-fixed top-0 start-50 translate-middle-x mt-5 p-3 bg-success text-white rounded shadow';
+            notification.style.zIndex = '9999';
+            notification.textContent = successMessage;
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+            
+            // Reset form
+            this.reset();
+        });
+        
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.padding = '10px 0';
+                navbar.style.backgroundColor = 'rgba(0, 51, 102, 0.98)';
+            } else {
+                navbar.style.padding = '15px 0';
+                navbar.style.backgroundColor = 'rgba(0, 51, 102, 0.95)';
+            }
+        });
+        
+        // Add animation on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
